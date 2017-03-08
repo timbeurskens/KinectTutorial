@@ -13,6 +13,12 @@ namespace KinectDemo
 
         static void Main(string[] args)
         {
+            //get the singleton instance of SomeObject.
+            SomeObject someInstance = SomeObject.GetInstance();
+
+            //note that the following is not possible because of the private constructor:
+            //SomeObject anotherInstance = new SomeObject();
+
             sensor = KinectSensor.GetDefault(); // get singleton instance of the KinectSensor
             BodyFrameReader bodyFrameReader = sensor.BodyFrameSource.OpenReader(); // get body frame reader
 
@@ -38,11 +44,6 @@ namespace KinectDemo
         static void OnProcessExit(object sender, EventArgs args)
         {
             sensor.Close();
-            //get the singleton instance of SomeObject.
-            SomeObject someInstance = SomeObject.GetInstance();
-
-            //note that the following is not possible because of the private constructor:
-            //SomeObject anotherInstance = new SomeObject();
         }
     }
 
