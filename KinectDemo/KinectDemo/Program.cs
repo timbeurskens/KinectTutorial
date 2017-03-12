@@ -10,7 +10,7 @@ namespace KinectDemo
     /// </summary>
     internal class Program
     {
-        private delegate void BodyReadyEventHandler(Body b);
+        private delegate void BodyReadyEventHandler(Body b, TimeSpan time);
         private static KinectSensor _sensor;
         private static IList<Body> _bodies;
         private static event BodyReadyEventHandler BodyReady;
@@ -40,8 +40,10 @@ namespace KinectDemo
         /// Handles body data
         /// </summary>
         /// <param name="body">body data from kinect sensor</param>
-        private static void Program_BodyReady(Body body)
+        /// <param name="time">relative time of the body frame</param>
+        private static void Program_BodyReady(Body body, TimeSpan time)
         {
+            Console.WriteLine(time.ToString());
             foreach (var joint in body.Joints)
             {
                 if (joint.Value.TrackingState == TrackingState.NotTracked || joint.Value.TrackingState == TrackingState.Inferred) continue; //joint is not tracked, so skip it for now
@@ -65,7 +67,7 @@ namespace KinectDemo
                 {
                     if (!body.IsTracked) continue; // body is not tracked, skip body
 
-                    BodyReady?.BeginInvoke(body, null, null);
+                    BodyReady?.BeginInvoke(body, bodyFrame.RelativeTime, null, null);
 
                     break; //when one body is handled, break out of this loop
                 }
