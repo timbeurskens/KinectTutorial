@@ -44,6 +44,16 @@ namespace KinectDemo
         private static void Program_BodyReady(Body body, TimeSpan time)
         {
             Console.WriteLine(time.ToString());
+
+            Joint ankleL;
+            Joint kneeL;
+
+            if (body.Joints.TryGetValue(JointType.KneeLeft, out kneeL) &&
+                body.Joints.TryGetValue(JointType.AnkleLeft, out ankleL))
+            {
+                
+            }
+
             foreach (var joint in body.Joints)
             {
                 if (joint.Value.TrackingState == TrackingState.NotTracked || joint.Value.TrackingState == TrackingState.Inferred) continue; //joint is not tracked, so skip it for now
@@ -83,5 +93,19 @@ namespace KinectDemo
         {
             _sensor.Close();
         }
+    }
+
+    internal class Vec3
+    {
+        private double _x, _y, _z;
+
+        public Vec3(double x, double y, double z)
+        {
+            _x = x;
+            _y = y;
+            _z = z;
+        }
+
+
     }
 }
